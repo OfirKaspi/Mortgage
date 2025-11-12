@@ -198,6 +198,57 @@ html.accessibility-readable-font * {
 /* Hide default controls on <video> (optional) */
 video::-webkit-media-controls { display: none !important; }
 
+/* ------------- RTL INPUT STYLING -------------------- */
+input[dir="rtl"],
+textarea[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Also apply RTL to inputs when parent has RTL direction */
+[dir="rtl"] input,
+[dir="rtl"] textarea {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL placeholder styling */
+input[dir="rtl"]::placeholder,
+textarea[dir="rtl"]::placeholder {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Also apply RTL to placeholders when parent has RTL direction */
+[dir="rtl"] input::placeholder,
+[dir="rtl"] textarea::placeholder {
+  direction: rtl;
+  text-align: right;
+}
+
+/* ------------- STICKY IMAGE CONTAINER -------------------- */
+/* This ensures images stick to the top when scrolling on desktop */
+.sticky-image-wrapper {
+  position: -webkit-sticky; /* Safari support */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  align-self: flex-start;
+  will-change: position;
+  height: fit-content;
+  /* Ensure it works within flex containers */
+  flex-shrink: 0;
+}
+
+/* Disable sticky on mobile - matches Tailwind md: breakpoint (768px) */
+@media (max-width: 767.98px) {
+  .sticky-image-wrapper {
+    position: relative !important;
+    top: auto !important;
+    align-self: stretch !important;
+  }
+}
+
 /* ------------- FORM BUTTON STYLING (Bright Green) -------------------- */
 /* From Uiverse.io by Spacious74 - Modified with bright green colors */
 
@@ -243,7 +294,8 @@ video::-webkit-media-controls { display: none !important; }
 
 .form-button-container button,
 .form-button-container > button {
-  font-size: 1.4em !important;
+  /* Mobile-first: smaller font size for mobile devices */
+  font-size: 0.95rem !important;
   padding: 0.6em 0.8em !important;
   border-radius: 0.5em !important;
   border: none !important;
@@ -256,6 +308,30 @@ video::-webkit-media-controls { display: none !important; }
   transition: all 0.2s !important;
   position: relative;
   z-index: 1;
+}
+
+/* Tablet and up: medium font size */
+@media (min-width: 768px) {
+  .form-button-container button,
+  .form-button-container > button {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Desktop: larger font size */
+@media (min-width: 1024px) {
+  .form-button-container button,
+  .form-button-container > button {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Large desktop: even larger font size */
+@media (min-width: 1280px) {
+  .form-button-container button,
+  .form-button-container > button {
+    font-size: 1.4em !important;
+  }
 }
 
 .form-button-container:not(.auto-width) button,
@@ -291,12 +367,34 @@ video::-webkit-media-controls { display: none !important; }
   display: inline-block;
   letter-spacing: 0.05rem;
   font-weight: 700;
-  font-size: 15px;
+  /* Mobile-first: smaller font size for mobile devices */
+  font-size: 13px;
   border-radius: 500px;
   overflow: hidden;
   background: #66ff66;
   color: ghostwhite;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Tablet and up: medium font size */
+@media (min-width: 768px) {
+  .hero-button {
+    font-size: 14px;
+  }
+}
+
+/* Desktop: larger font size */
+@media (min-width: 1024px) {
+  .hero-button {
+    font-size: 15px;
+  }
+}
+
+/* Large desktop: even larger font size */
+@media (min-width: 1280px) {
+  .hero-button {
+    font-size: 16px;
+  }
 }
 
 .hero-button:hover {
@@ -382,14 +480,30 @@ video::-webkit-media-controls { display: none !important; }
 /* Large size variant for hero buttons */
 .hero-button-large {
   padding: 0.65rem 1.4rem;
-  font-size: 15px;
+  /* Mobile-first: smaller font size for mobile devices */
+  font-size: 14px;
   min-height: auto;
   width: auto;
 }
 
+/* Tablet and up: medium font size */
 @media (min-width: 768px) {
   .hero-button-large {
     padding: 0.7rem 1.5rem;
+    font-size: 15px;
+  }
+}
+
+/* Desktop: larger font size */
+@media (min-width: 1024px) {
+  .hero-button-large {
     font-size: 16px;
+  }
+}
+
+/* Large desktop: even larger font size */
+@media (min-width: 1280px) {
+  .hero-button-large {
+    font-size: 17px;
   }
 }

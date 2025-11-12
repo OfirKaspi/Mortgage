@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { ImageSectionType } from "@/types/types";
-import LeaveDetailsDialog from "@/components/forms/leave-details-form/LeaveDetailsFormDialog";
+import { Button } from "@/components/ui/button";
+import { scrollToSection } from "@/lib/utils";
 
 interface ImageSectionProps {
   data: ImageSectionType;
@@ -47,8 +48,14 @@ const ImageSection = ({ data }: ImageSectionProps) => {
 
         {/* Button */}
         {buttonText && (
-          <div >
-            <LeaveDetailsDialog text={buttonText} isDark={false}/>
+          <div className="w-full max-w-xs">
+            <Button
+              onClick={() => scrollToSection("floating-form")}
+              className="bg-purple-800 w-full text-white hover:bg-purple-900 text-xs sm:text-sm md:text-base px-3 sm:px-4 py-2 sm:py-2.5 h-auto whitespace-normal break-words"
+              aria-label={buttonText}
+            >
+              {buttonText}
+            </Button>
           </div>
         )}
       </div>

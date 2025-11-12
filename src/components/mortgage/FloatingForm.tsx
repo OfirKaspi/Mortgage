@@ -4,7 +4,7 @@ import LeadForm from "./LeadForm";
 
 export default function FloatingForm() {
 	return (
-		<section className="pb-[100px] px-4 bg-gradient-to-b from-primary/50 via-primary/80 to-primary/50">
+		<section id="floating-form" className="pb-[20px] px-4 bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10">
 			<div className="relative container mx-auto max-w-2xl">
 				<div className="pb-[100px] -mt-[100px] bg-card p-6 md:p-10 lg:p-12 rounded-2xl shadow-2xl border border-border/50">
 					<div className="text-center mb-6 md:mb-8">

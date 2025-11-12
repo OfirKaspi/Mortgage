@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Footer() {
   const year = CONFIG.year;
   return (
-    <footer className="bg-gradient-to-b from-primary/5 via-primary/8 to-primary/5 border-t border-primary/10 py-8 sm:py-12 px-4 sm:px-6 w-full">
+    <footer className="bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10 border-t border-primary/10 py-8 sm:py-12 px-4 sm:px-6 w-full">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Contact Info */}
@@ -16,6 +16,11 @@ export default function Footer() {
             <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-foreground">
               צור קשר
             </h3>
+            {CONFIG.contactName && (
+              <p className="text-sm font-medium text-foreground mb-3">
+                {CONFIG.contactName}
+              </p>
+            )}
             <div className="space-y-2">
               <Contact />
             </div>

@@ -63,7 +63,7 @@ const testimonials: Testimonial[] = [
 
 export default function Testimonials() {
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-primary/5 via-primary/8 to-primary/5">
+    <section className="py-20 px-4 bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

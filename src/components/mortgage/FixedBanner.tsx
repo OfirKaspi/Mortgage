@@ -12,24 +12,24 @@ export default function FixedBanner() {
 
   return (
     <div data-fixed-banner className="fixed bottom-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-t-2 border-primary/20 shadow-2xl">
-      <div className="container mx-auto max-w-6xl px-4 py-5">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-foreground mb-1">
+      <div className="container mx-auto max-w-6xl px-3 py-2 sm:px-4 sm:py-3 md:py-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold text-foreground mb-0.5 sm:mb-1">
               מוכנים להתחיל?
             </h3>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-[10px] sm:text-xs md:text-sm text-muted-foreground leading-tight">
               השאירו פרטים עכשיו וניצור איתכם קשר תוך 24 שעות
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex items-center gap-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 flex-shrink-0">
+            <div className="hidden sm:flex items-center gap-2 md:gap-4 text-[10px] sm:text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-primary rounded-full" />
                 <span>ללא עלות</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+              <div className="flex items-center gap-1 sm:gap-1.5">
+                <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-primary rounded-full" />
                 <span>ללא התחייבות</span>
               </div>
             </div>

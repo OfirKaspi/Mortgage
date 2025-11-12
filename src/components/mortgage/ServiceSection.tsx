@@ -101,38 +101,40 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
     : "bg-gradient-to-b from-background via-muted-custom/30 to-background";
 
   return (
-    <section id={content.id} className={`relative py-20 px-4 scroll-mt-20 ${bgClass}`}>
+    <section id={content.id} className={`relative py-8 md:py-20 px-4 scroll-mt-20 ${bgClass}`}>
       {/* Dot grid background pattern */}
       <div 
-        className="absolute inset-0 opacity-30 z-0 pointer-events-none"
+        className="absolute inset-0 opacity-55 z-0 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
           backgroundSize: '24px 24px',
         }}
       />
       <div className="container mx-auto max-w-6xl relative z-10">
-        <div className={`flex flex-col lg:flex-row gap-12 items-start ${
-          !isRightAligned ? "lg:flex-row-reverse" : ""
+        <div className={`flex flex-col md:flex-row gap-12 md:items-start ${
+          !isRightAligned ? "md:flex-row-reverse" : ""
         }`}>
           {/* Image Column - Sticky */}
-          <div className="w-full lg:w-1/2 lg:sticky lg:top-24 self-start">
-            <div className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl group">
-              <Image
-                src={content.imageUrl}
-                alt={content.imageAlt}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <div className="flex items-center gap-3 text-white">
-                  <div className="p-3 bg-primary/90 backdrop-blur-sm rounded-lg">
-                    <IconComponent className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold">{content.title}</h3>
+          <div className="w-full md:w-1/2 md:flex-shrink-0">
+            <div className="sticky-image-wrapper">
+              <div className="relative w-full aspect-[16/9] md:aspect-square rounded-2xl overflow-hidden shadow-2xl group">
+                <Image
+                  src={content.imageUrl}
+                  alt={content.imageAlt}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="flex items-center gap-3 text-white">
+                    <div className="p-3 bg-primary/90 backdrop-blur-sm rounded-lg">
+                      <IconComponent className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold">{content.title}</h3>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -140,7 +142,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
           </div>
 
           {/* Content Column */}
-          <div className={`w-full lg:w-1/2 space-y-6 ${isRightAligned ? "text-right" : "text-left"}`}>
+          <div className="w-full md:w-1/2 space-y-6 text-right">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 {content.title}

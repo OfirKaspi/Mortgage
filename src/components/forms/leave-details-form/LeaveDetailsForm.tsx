@@ -106,6 +106,7 @@ const LeaveDetailsForm = ({ isSuccess, setIsSuccess }: LeaveDetailsFormProps) =>
             onChange={(e) =>
               setFormData({ ...formData, full_name: e.target.value })
             }
+            dir="rtl"
           />
           {errors.full_name && (
             <p className="col-span-4 text-red-600">{errors.full_name}</p>

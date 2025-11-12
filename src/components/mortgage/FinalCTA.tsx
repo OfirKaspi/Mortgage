@@ -3,11 +3,15 @@
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import { trackCTAClick } from "@/lib/analytics";
+import { CONFIG } from "@/config/config";
 
 export default function FinalCTA() {
+  const { phoneNumber } = CONFIG;
+  const formattedPhone = phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+  
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-primary/5 via-primary/8 to-primary/5">
-      <div className="container mx-auto max-w-4xl">
+    <section className="py-20 px-4 bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10">
+      <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
             מוכנים להתחיל?
@@ -31,7 +35,7 @@ export default function FinalCTA() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
           {/* Phone CTA */}
           <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/95 to-secondary text-primary-foreground p-8 rounded-2xl shadow-2xl group">
             <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20" />
@@ -45,21 +49,20 @@ export default function FinalCTA() {
               <p className="mb-8 opacity-95 text-lg">
                 צלצלו אלינו עכשיו ונענה על כל השאלות שלכם
               </p>
-              <Button
-                asChild
-                size="lg"
-                className="w-full bg-white text-primary hover:bg-gray-50 hover:scale-105 transition-all duration-200 min-h-[44px] font-semibold shadow-lg"
-                onClick={() => trackCTAClick("phone_call", "final_cta")}
-              >
-                <a
-                  href="tel:0552528601"
-                  className="flex items-center justify-center gap-2"
+              <div className="form-button-container">
+                <Button
+                  size="lg"
+                  className="w-full flex items-center justify-center gap-2"
+                  onClick={() => {
+                    trackCTAClick("phone_call", "final_cta");
+                    window.location.href = `tel:${phoneNumber}`;
+                  }}
                   aria-label="צלצול טלפון"
                 >
                   <Phone className="w-5 h-5" aria-hidden="true" />
-                  <span>055-252-8601</span>
-                </a>
-              </Button>
+                  <span>{formattedPhone}</span>
+                </Button>
+              </div>
             </div>
           </div>
 

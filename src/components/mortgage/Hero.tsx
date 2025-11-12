@@ -15,7 +15,7 @@ export default function Hero() {
     <section className="relative min-h-[800px] flex flex-col overflow-hidden bg-gray-50">
       {/* Dot grid background pattern */}
       <div 
-        className="absolute inset-0 opacity-30 z-0"
+        className="absolute inset-0 opacity-55 z-0"
         style={{
           backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
           backgroundSize: '24px 24px',

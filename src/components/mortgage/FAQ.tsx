@@ -68,7 +68,7 @@ export default function FAQ() {
     <section className="relative py-20 px-4 bg-gradient-to-b from-background via-primary/3 to-background">
       {/* Dot grid background pattern */}
       <div 
-        className="absolute inset-0 opacity-30 z-0 pointer-events-none"
+        className="absolute inset-0 opacity-55 z-0 pointer-events-none"
         style={{
           backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
           backgroundSize: '24px 24px',

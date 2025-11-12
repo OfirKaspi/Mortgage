@@ -33,7 +33,7 @@ import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden" role="main">
+    <main className="min-h-screen overflow-x-hidden" role="main" dir="rtl">
       <ScrollTracker />
       <Hero />
       <FloatingForm />
