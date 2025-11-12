@@ -12,30 +12,24 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80"
-          alt="Background"
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
-        {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/75 to-background/80" />
-        {/* Additional green tint overlay to match theme */}
-        <div className="absolute inset-0 bg-primary/5" />
-      </div>
-
+    <section className="relative min-h-[800px] flex flex-col overflow-hidden bg-gray-50">
+      {/* Dot grid background pattern */}
+      <div 
+        className="absolute inset-0 opacity-30 z-0"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+      
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
         <div className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-6xl text-center space-y-8 relative z-10">
+      {/* Content Section */}
+      <div className="container mx-auto max-w-6xl text-center space-y-8 relative z-10 pt-[100px] lg:pt-[150px] px-4">
         {/* Main Headline */}
         <div className="space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
@@ -105,6 +99,19 @@ export default function Hero() {
             <span>שיחה ראשונית חינם</span>
           </div>
         </div>
+      </div>
+
+      {/* Home Image Section - Part of flex column, 200px from bottom, full width */}
+      <div className="relative z-10 w-full mb-[200px] mt-[30px] lg:mt-[0px]">
+        <Image
+          src="https://res.cloudinary.com/dudwjf2pu/image/upload/v1762968448/BishvilHamashkanta/hero_2_no_bg_2_tihmmy.png"
+          alt="Home"
+          width={1920}
+          height={1080}
+          className="w-full h-auto object-contain"
+          priority
+          sizes="100vw"
+        />
       </div>
     </section>
   );

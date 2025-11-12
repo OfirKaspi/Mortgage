@@ -101,8 +101,16 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
     : "bg-gradient-to-b from-background via-muted-custom/30 to-background";
 
   return (
-    <section id={content.id} className={`py-20 px-4 scroll-mt-20 ${bgClass}`}>
-      <div className="container mx-auto max-w-6xl">
+    <section id={content.id} className={`relative py-20 px-4 scroll-mt-20 ${bgClass}`}>
+      {/* Dot grid background pattern */}
+      <div 
+        className="absolute inset-0 opacity-30 z-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #94a3b8 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
+      <div className="container mx-auto max-w-6xl relative z-10">
         <div className={`flex flex-col lg:flex-row gap-12 items-start ${
           !isRightAligned ? "lg:flex-row-reverse" : ""
         }`}>
