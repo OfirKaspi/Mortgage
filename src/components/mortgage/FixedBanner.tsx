@@ -33,13 +33,16 @@ export default function FixedBanner() {
                 <span>ללא התחייבות</span>
               </div>
             </div>
-            <Button
-              onClick={handleClick}
-              data-banner-trigger
-              className="bg-cta-gradient hover:opacity-90 hover:shadow-lg text-white font-semibold px-8 py-6 text-base min-h-[44px] whitespace-nowrap rounded-xl transition-all duration-200"
-            >
-              השאר פרטים
-            </Button>
+            <div className="form-button-container auto-width">
+              <Button
+                onClick={handleClick}
+                data-banner-trigger
+                className="whitespace-nowrap"
+                style={{ width: 'auto', padding: '0.6em 0.8em' }}
+              >
+                השאר פרטים
+              </Button>
+            </div>
           </div>
         </div>
       </div>

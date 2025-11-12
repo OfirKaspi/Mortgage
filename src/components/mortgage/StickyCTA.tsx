@@ -34,13 +34,15 @@ export default function StickyCTA() {
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t shadow-2xl">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <div className="p-4">
-          <DialogTrigger asChild>
-            <Button
-              className="w-full bg-cta-gradient hover:opacity-90 text-white font-semibold py-6 text-lg min-h-[44px]"
-            >
-              השאר פרטים עכשיו
-            </Button>
-          </DialogTrigger>
+          <div className="form-button-container">
+            <DialogTrigger asChild>
+              <Button
+                className="w-full"
+              >
+                השאר פרטים עכשיו
+              </Button>
+            </DialogTrigger>
+          </div>
           <p className="text-xs text-center text-muted-foreground mt-2">
             ללא עלות | ללא התחייבות
           </p>

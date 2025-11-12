@@ -204,18 +204,20 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
             )}
 
             {/* CTA Button */}
-            <div className="pt-4">
-              <Button
-                onClick={() => {
-                  trackCTAClick(content.cta, `service-section-${mortgageType}`);
-                  scrollToSection("lead-form");
-                }}
-                size="lg"
-                className="w-full bg-cta-gradient hover:opacity-90 hover:shadow-lg text-white font-semibold py-6 text-lg min-h-[44px] transition-all duration-200"
-                aria-label={content.cta}
-              >
-                {content.cta}
-              </Button>
+            <div className="pt-4" style={{ overflow: 'visible' }}>
+              <div className="form-button-container">
+                <Button
+                  onClick={() => {
+                    trackCTAClick(content.cta, `service-section-${mortgageType}`);
+                    scrollToSection("lead-form");
+                  }}
+                  size="lg"
+                  className="w-full"
+                  aria-label={content.cta}
+                >
+                  {content.cta}
+                </Button>
+              </div>
               <p className="text-center text-sm text-muted-foreground mt-3">
                 {content.ctaSecondary}
               </p>

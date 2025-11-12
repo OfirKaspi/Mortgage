@@ -246,14 +246,16 @@ export default function LeadForm({
           )}
         </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-cta-gradient hover:opacity-90 text-white font-semibold py-6 text-lg min-h-[44px]"
-          disabled={loading}
-          aria-label="שלח פרטים"
-        >
-          {loading ? "שולח..." : "שלח פרטים"}
-        </Button>
+        <div className="form-button-container">
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={loading}
+            aria-label="שלח פרטים"
+          >
+            {loading ? "שולח..." : "שלח פרטים"}
+          </Button>
+        </div>
 
         <p className="text-xs text-muted-foreground text-center">
           בלחיצה על כפתור זה, אתה מסכים למדיניות הפרטיות שלנו. הפרטים שלך

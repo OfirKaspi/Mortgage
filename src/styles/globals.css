@@ -197,3 +197,81 @@ html.accessibility-readable-font * {
 
 /* Hide default controls on <video> (optional) */
 video::-webkit-media-controls { display: none !important; }
+
+/* ------------- FORM BUTTON STYLING (Bright Green) -------------------- */
+/* From Uiverse.io by Spacious74 - Modified with bright green colors */
+
+.form-button-container {
+  position: relative;
+  padding: 3px;
+  background: linear-gradient(90deg, #00ff88, #00ff66);
+  border-radius: 0.9em;
+  transition: all 0.4s ease;
+  display: inline-block;
+  width: 100%;
+  overflow: visible;
+}
+
+.form-button-container[style*="width: auto"],
+.form-button-container.auto-width {
+  width: auto;
+  display: inline-block;
+}
+
+.form-button-container::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 0.9em;
+  z-index: -1;
+  filter: blur(0);
+  transition: filter 0.4s ease;
+  background: linear-gradient(90deg, #00ff88, #00ff66);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.form-button-container:hover::before {
+  background: linear-gradient(90deg, #00ff88, #00ff66);
+  filter: blur(1.2em);
+  opacity: 1;
+}
+
+.form-button-container:active::before {
+  filter: blur(0.2em);
+}
+
+.form-button-container button,
+.form-button-container > button {
+  font-size: 1.4em !important;
+  padding: 0.6em 0.8em !important;
+  border-radius: 0.5em !important;
+  border: none !important;
+  background-color: #fff !important;
+  color: #000 !important;
+  cursor: pointer !important;
+  box-shadow: 2px 2px 3px #000000b4 !important;
+  font-weight: 600 !important;
+  min-height: 44px !important;
+  transition: all 0.2s !important;
+  position: relative;
+  z-index: 1;
+}
+
+.form-button-container:not(.auto-width) button,
+.form-button-container:not(.auto-width) > button {
+  width: 100% !important;
+}
+
+.form-button-container button:hover,
+.form-button-container > button:hover {
+  opacity: 0.95 !important;
+  background-color: #fff !important;
+}
+
+.form-button-container button:disabled,
+.form-button-container > button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  background-color: #fff !important;
+}
