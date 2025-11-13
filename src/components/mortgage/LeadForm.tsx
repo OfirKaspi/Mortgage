@@ -16,6 +16,8 @@ import { leadFormSchema } from "@/lib/validations";
 import { useUTMParams } from "@/hooks/useUTMParams";
 import type { MortgageType } from "@/types/types";
 import { trackFormFocus, trackFormSubmission } from "@/lib/analytics";
+import { pageContent } from "@/config/pageContent";
+import OptimizedImage from "@/components/common/OptimizedImage";
 
 interface LeadFormProps {
   defaultMortgageType?: MortgageType;
@@ -32,6 +34,7 @@ export default function LeadForm({
 }: LeadFormProps) {
   const { toast } = useToast();
   const utmParams = useUTMParams();
+  const content = pageContent.leadForm;
   const [formData, setFormData] = useState<{
     fullName: string;
     phone: string;
@@ -114,8 +117,8 @@ export default function LeadForm({
       trackFormSubmission(true, formData.mortgageType);
 
       toast({
-        title: "✅ תודה רבה!",
-        description: "פרטייך התקבלו בהצלחה. ניצור עמך קשר בהקדם האפשרי.",
+        title: content.messages.success.title,
+        description: content.messages.success.description,
         duration: 5000,
       });
 
@@ -135,11 +138,11 @@ export default function LeadForm({
       console.error("Form submission error:", error);
       trackFormSubmission(false, formData.mortgageType);
       toast({
-        title: "❌ שגיאה",
+        title: content.messages.error.title,
         description:
           error instanceof Error
             ? error.message
-            : "אופס, משהו קרה. אנא נסה שנית.",
+            : content.messages.error.description,
         variant: "destructive",
         duration: 5000,
       });
@@ -151,16 +154,28 @@ export default function LeadForm({
   return (
     <div className={`space-y-4 ${className}`}>
       {showTitle && (
-        <h3 className="text-2xl font-bold text-center mb-6">
-          השאר פרטים ונחזור אליך
-        </h3>
+        <>
+          <div className="flex justify-center mb-4">
+            <OptimizedImage
+              src="https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/BishvilHamashkanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png"
+              alt="Logo"
+              width={320}
+              height={160}
+              className="h-24 w-auto sm:h-28 md:h-32 lg:h-36 object-contain"
+              priority
+            />
+          </div>
+          <h3 className="text-2xl font-bold text-center mb-6">
+            {content.title}
+          </h3>
+        </>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="fullName">שם מלא *</Label>
+          <Label htmlFor="fullName">{content.labels.fullName}</Label>
           <Input
             id="fullName"
-            placeholder="ישראל ישראלי"
+            placeholder={content.placeholders.fullName}
             value={formData.fullName}
             onChange={(e) => {
               setFormData({ ...formData, fullName: e.target.value });
@@ -177,11 +192,11 @@ export default function LeadForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phone">טלפון *</Label>
+          <Label htmlFor="phone">{content.labels.phone}</Label>
           <Input
             id="phone"
             type="tel"
-            placeholder="0501234567"
+            placeholder={content.placeholders.phone}
             value={formData.phone}
             onChange={(e) => {
               const value = e.target.value.replace(/\D/g, "");
@@ -200,11 +215,11 @@ export default function LeadForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">אימייל (אופציונלי)</Label>
+          <Label htmlFor="email">{content.labels.email}</Label>
           <Input
             id="email"
             type="email"
-            placeholder="example@example.com"
+            placeholder={content.placeholders.email}
             value={formData.email}
             onChange={(e) => {
               setFormData({ ...formData, email: e.target.value });
@@ -219,7 +234,7 @@ export default function LeadForm({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="mortgageType">סוג משכנתא *</Label>
+          <Label htmlFor="mortgageType">{content.labels.mortgageType}</Label>
           <Select
             value={formData.mortgageType}
             onValueChange={(value: MortgageType) => {
@@ -233,12 +248,12 @@ export default function LeadForm({
               id="mortgageType"
               className={errors.mortgageType ? "border-destructive" : ""}
             >
-              <SelectValue placeholder="בחר סוג משכנתא" />
+              <SelectValue placeholder={content.placeholders.mortgageType} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="new">משכנתא חדשה</SelectItem>
-              <SelectItem value="refinance">מחזור משכנתא</SelectItem>
-              <SelectItem value="reverse">משכנתא הפוכה</SelectItem>
+              <SelectItem value="new">{content.mortgageTypeOptions.new}</SelectItem>
+              <SelectItem value="refinance">{content.mortgageTypeOptions.refinance}</SelectItem>
+              <SelectItem value="reverse">{content.mortgageTypeOptions.reverse}</SelectItem>
             </SelectContent>
           </Select>
           {errors.mortgageType && (
@@ -251,15 +266,14 @@ export default function LeadForm({
             type="submit"
             className="w-full"
             disabled={loading}
-            aria-label="שלח פרטים"
+            aria-label={content.button.submit}
           >
-            {loading ? "שולח..." : "שלח פרטים"}
+            {loading ? content.button.submitting : content.button.submit}
           </Button>
         </div>
 
         <p className="text-xs text-muted-foreground text-center">
-          בלחיצה על כפתור זה, אתה מסכים למדיניות הפרטיות שלנו. הפרטים שלך
-          יישמרו בצורה מאובטחת ולא יועברו לצדדים שלישיים.
+          {content.privacy}
         </p>
       </form>
     </div>

@@ -27,9 +27,10 @@ const WhatsAppButton = () => {
       const cookieNoticeHeight = localStorage.getItem("cookie-consent")
         ? 0 // If cookie consent is already accepted, no adjustment needed
         : document.querySelector(".cookie-notice")?.clientHeight || 0; // Get the height of the CookieNotice if visible
+      const bannerHeight = document.querySelector('[data-fixed-banner]')?.clientHeight || 0; // Get the height of the fixed banner
 
       const x = window.innerWidth - size - padding;
-      const y = window.innerHeight - size - cookieNoticeHeight - 8; // Adjust position based on CookieNotice height
+      const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - 8; // Adjust position based on CookieNotice and banner height
       setInitialPosition({ x, y });
     }, 0); // next tick
 

@@ -456,7 +456,7 @@ textarea[dir="rtl"]::placeholder {
 }
 
 .hero-button-variant-1::before {
-  background: #000;
+  background: #006b24;
 }
 
 /* Variant 2: Lighter Green */
@@ -465,7 +465,7 @@ textarea[dir="rtl"]::placeholder {
 }
 
 .hero-button-variant-2::before {
-  background: #000;
+  background: #006b24;
 }
 
 /* Variant 3: Vibrant Green */
@@ -474,7 +474,7 @@ textarea[dir="rtl"]::placeholder {
 }
 
 .hero-button-variant-3::before {
-  background: #000;
+  background: #006b24;
 }
 
 /* Large size variant for hero buttons */
@@ -505,5 +505,16 @@ textarea[dir="rtl"]::placeholder {
 @media (min-width: 1280px) {
   .hero-button-large {
     font-size: 17px;
+  }
+}
+
+/* Hero headline second row glow - reduced on mobile */
+.hero-second-row-glow {
+  filter: drop-shadow(0 0 10px rgba(107, 175, 142, 0.4)) drop-shadow(0 0 20px rgba(107, 175, 142, 0.3)) drop-shadow(0 0 40px rgba(107, 175, 142, 0.2)) drop-shadow(0 0 60px rgba(107, 175, 142, 0.15));
+}
+
+@media (max-width: 768px) {
+  .hero-second-row-glow {
+    filter: drop-shadow(0 0 5px rgba(107, 175, 142, 0.25)) drop-shadow(0 0 10px rgba(107, 175, 142, 0.15)) drop-shadow(0 0 20px rgba(107, 175, 142, 0.1));
   }
 }

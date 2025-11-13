@@ -8,7 +8,7 @@ export default function GAListener() {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		if (typeof window.gtag === "function") {
+		if (CONFIG.GOOGLE_ANALYTICS_ID && typeof window.gtag === "function") {
 			window.gtag("config", CONFIG.GOOGLE_ANALYTICS_ID, {
 				page_path: pathname,
 			});

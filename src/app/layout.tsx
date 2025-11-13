@@ -58,18 +58,22 @@ const RootLayout = async ({ children, }: Readonly<{ children: React.ReactNode }>
           href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700&display=swap"
           rel="stylesheet"
         /> */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${CONFIG.GOOGLE_ANALYTICS_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${CONFIG.GOOGLE_ANALYTICS_ID}');
-          `}
-        </Script>
+        {CONFIG.GOOGLE_ANALYTICS_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${CONFIG.GOOGLE_ANALYTICS_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${CONFIG.GOOGLE_ANALYTICS_ID}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className="antialiased min-h-screen">
         <ThemeProvider initialTheme={serverTheme}>

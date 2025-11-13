@@ -2,7 +2,7 @@ import LegalInfo from "@/components/legal/LegalInfo";
 import Contact from "@/components/layout/Contact";
 import SocialMedia from "@/components/layout/SocialMedia";
 import { CONFIG } from "@/config/config";
-import Image from "next/image";
+import OptimizedImage from "@/components/common/OptimizedImage";
 import Link from "next/link";
 
 export default function Footer() {
@@ -58,7 +58,7 @@ export default function Footer() {
               className="flex items-center gap-3 hover:opacity-80 transition-opacity"
             >
               <span className="text-base text-foreground">LEVEL UP</span>
-              <Image 
+              <OptimizedImage 
                 src="/levelup_logo.png" 
                 alt="Level Up" 
                 width={120} 

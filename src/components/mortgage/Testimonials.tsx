@@ -1,84 +1,44 @@
+"use client";
+
 import { Star } from "lucide-react";
-
-interface Testimonial {
-  name: string;
-  segment: "new" | "refinance" | "reverse";
-  before: string;
-  after: string;
-  savings?: string;
-  rating: number;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    name: "דני כהן",
-    segment: "new",
-    before:
-      "הייתי מבולבל לגמרי. כל בנק הציע משהו אחר ולא ידעתי מה נכון. חששתי לעשות טעות שתעלה לי מאות אלפי שקלים.",
-    after:
-      "היועץ בנה לי תמהיל מושלם שמותאם בדיוק למצב שלי. עכשיו אני יודע בדיוק מה יש לי, כמה אני משלם, ומה קורה אם משהו משתנה. שקט נפשי אמיתי.",
-    savings: "חסך צפוי: 120,000 ₪",
-    rating: 5,
-  },
-  {
-    name: "שרה לוי",
-    segment: "refinance",
-    before:
-      "ההחזר החודשי שלנו קפץ מ-8,000 ל-12,000 שקלים. לא יכולנו להמשיך ככה. חששנו שנצטרך למכור את הבית.",
-    after:
-      "תוך חודשיים מחזרנו את המשכנתא. ההחזר חזר ל-7,500 שקלים. לא רק שחסכנו - גם קיבלנו תנאים טובים יותר. הצילו אותנו.",
-    savings: "חסך חודשי: 4,500 ₪",
-    rating: 5,
-  },
-  {
-    name: "משה אברהם",
-    segment: "reverse",
-    before:
-      "הפנסיה לא הספיקה, והילדים לא יכלו לעזור. רציתי לשפץ את הבית אבל לא היה לי איך. לא רציתי להיות תלוי.",
-    after:
-      "משכנתא הפוכה פתרה לי את הבעיה. קיבלתי כסף נזיל בלי למכור את הבית, בלי לעזוב, ובלי להיות תלוי. הילדים היו חלק מהתהליך והבינו שזה הפתרון הנכון.",
-    savings: "קיבל: 800,000 ₪",
-    rating: 5,
-  },
-  {
-    name: "רותי דוד",
-    segment: "new",
-    before:
-      "זה היה הבית הראשון שלי. לא ידעתי כלום על משכנתאות. כל מה שידעתי זה שצריך לקחת מהבנק שהציע הכי הרבה.",
-    after:
-      "היועץ הסביר לי הכל, בנה לי תמהיל שמותאם למצב שלי, וליווה אותי בכל התהליך. עכשיו אני יודעת שיש לי את הפתרון הנכון.",
-    rating: 5,
-  },
-  {
-    name: "יוסי מזרחי",
-    segment: "refinance",
-    before:
-      "הבנק אמר לי שאי אפשר למחזר כי יש קנסות. הייתי תקוע עם ריבית גבוהה ולא היה לי מוצא.",
-    after:
-      "היועץ מצא פתרון יצירתי. מחזרנו את המשכנתא למרות הקנסות, ובסופו של דבר חסכנו עשרות אלפי שקלים. מומחיות אמיתית.",
-    savings: "חסך כולל: 180,000 ₪",
-    rating: 5,
-  },
-];
+import { pageContent } from "@/config/pageContent";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { createVariants } from "@/utils/animationVariants";
 
 export default function Testimonials() {
+  const content = pageContent.testimonials;
+  const testimonials = content.items;
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10">
+    <section ref={ref} className="py-20 px-4 bg-gradient-to-b from-primary/10 via-primary/15 to-primary/10">
       <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={createVariants({ type: "fadeUp", duration: 0.9, delay: 0.3 })}
+        >
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            מה הלקוחות שלנו אומרים
+            {content.title}
           </h2>
           <p className="text-lg text-muted-foreground">
-            אלפי משפחות כבר בחרו בנו - הנה מה שיש להן לומר
+            {content.subtitle}
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <div
+            <motion.div
               key={index}
               className="group bg-background p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-border/50 hover:border-primary/30 hover:-translate-y-1"
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "slideUp", duration: 0.8, delay: 0.5 + index * 0.15 })}
+              whileHover={{ y: -5, transition: { duration: 0.3 } }}
             >
               {/* Rating */}
               <div className="flex gap-1 mb-6">
@@ -96,9 +56,7 @@ export default function Testimonials() {
                   {testimonial.name}
                 </h3>
                 <p className="text-sm text-primary font-medium">
-                  {testimonial.segment === "new" && "משכנתא חדשה"}
-                  {testimonial.segment === "refinance" && "מחזור משכנתא"}
-                  {testimonial.segment === "reverse" && "משכנתא הפוכה"}
+                  {content.segmentLabels[testimonial.segment]}
                 </p>
               </div>
 
@@ -107,7 +65,7 @@ export default function Testimonials() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 bg-red-500 rounded-full" />
                   <p className="text-xs font-semibold text-red-600 dark:text-red-400 uppercase tracking-wide">
-                    לפני:
+                    {content.beforeLabel}
                   </p>
                 </div>
                 <p className="text-sm text-foreground leading-relaxed italic">
@@ -120,7 +78,7 @@ export default function Testimonials() {
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-2 h-2 bg-primary rounded-full" />
                   <p className="text-xs font-semibold text-primary uppercase tracking-wide">
-                    אחרי:
+                    {content.afterLabel}
                   </p>
                 </div>
                 <p className="text-sm text-foreground leading-relaxed">{testimonial.after}</p>
@@ -134,7 +92,7 @@ export default function Testimonials() {
                   </p>
                 </div>
               )}
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -2,7 +2,7 @@
 
 import { CONFIG } from "@/config/config";
 import { redirectToPlatform } from "@/utils/redirectToPlatform";
-import Image from "next/image";
+import OptimizedImage from "@/components/common/OptimizedImage";
 
 const SocialMedia = () => {
   const { whatsappNumber, facebookUsername, instagramUsername } = CONFIG
@@ -44,15 +44,15 @@ const SocialMedia = () => {
           >
             <button
               type="button"
-              className="relative w-12 h-12 min-w-[48px] min-h-[48px] rounded-lg border-2 border-border bg-background hover:border-primary hover:bg-primary/5 hover:shadow-md transition-all flex items-center justify-center group"
+              className="relative w-12 h-12 min-w-[48px] min-h-[48px] rounded-lg border-2 border-border bg-background hover:border-primary hover:bg-primary/5 hover:shadow-md transition-all flex items-center justify-center group p-2"
               onClick={() => handleClick(social.href)}
               aria-label={social.label}
             >
-              <Image
+              <OptimizedImage
                 src={`/social-media/${social.name}.svg`}
                 alt={`${social.name} logo`}
-                width={24}
-                height={24}
+                width={18}
+                height={18}
                 className="object-contain group-hover:scale-110 transition-transform"
               />
             </button>

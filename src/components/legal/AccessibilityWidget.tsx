@@ -59,9 +59,10 @@ export default function AccessibilityWidget() {
 		  const cookieNoticeHeight = localStorage.getItem("cookie-consent")
 			? 0
 			: document.querySelector(".cookie-notice")?.clientHeight || 0;
+		  const bannerHeight = document.querySelector('[data-fixed-banner]')?.clientHeight || 0; // Get the height of the fixed banner
 	  
 		  const x = 8;
-		  const y = window.innerHeight - size - cookieNoticeHeight - 8;
+		  const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - 8;
 		  setInitialPosition({ x, y });
 	  
 		  console.log("Final Y:", y);

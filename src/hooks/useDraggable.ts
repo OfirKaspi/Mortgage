@@ -10,6 +10,14 @@ interface DraggableOptions {
 
 const passiveFalse: AddEventListenerOptions = { passive: false };
 
+/**
+ * Gets the height of the fixed banner at the bottom of the page
+ */
+function getFixedBannerHeight(): number {
+  const banner = document.querySelector('[data-fixed-banner]') as HTMLElement;
+  return banner ? banner.offsetHeight : 0;
+}
+
 export function useDraggable({
   size,
   initialPosition,
@@ -58,13 +66,15 @@ export function useDraggable({
 
     wasDragged.current = true;
 
+    const bannerHeight = getFixedBannerHeight();
+
     const newX = Math.max(
       padding,
       Math.min(window.innerWidth - size - padding, e.clientX - dragOffset.current.x)
     );
     const newY = Math.max(
       padding,
-      Math.min(window.innerHeight - size - padding, e.clientY - dragOffset.current.y)
+      Math.min(window.innerHeight - size - padding - bannerHeight, e.clientY - dragOffset.current.y)
     );
 
     setPosition({ x: newX, y: newY });
@@ -110,13 +120,15 @@ export function useDraggable({
     wasDragged.current = true;
     e.preventDefault(); // Block scroll during actual drag
 
+    const bannerHeight = getFixedBannerHeight();
+
     const newX = Math.max(
       padding,
       Math.min(window.innerWidth - size - padding, touch.clientX - dragOffset.current.x)
     );
     const newY = Math.max(
       padding,
-      Math.min(window.innerHeight - size - padding, touch.clientY - dragOffset.current.y)
+      Math.min(window.innerHeight - size - padding - bannerHeight, touch.clientY - dragOffset.current.y)
     );
 
     setPosition({ x: newX, y: newY });

@@ -4,96 +4,33 @@ import { Button } from "@/components/ui/button";
 import type { MortgageType } from "@/types/types";
 import { trackCTAClick } from "@/lib/analytics";
 import { scrollToSection } from "@/lib/utils";
-import Image from "next/image";
+import OptimizedImage from "@/components/common/OptimizedImage";
 import { AlertCircle, TrendingDown, TrendingUp, Home, Calculator, Users } from "lucide-react";
+import { pageContent } from "@/config/pageContent";
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import { createVariants } from "@/utils/animationVariants";
 
 interface ServiceSectionProps {
   mortgageType: MortgageType;
   textAlignment: "right" | "left";
 }
 
-const segmentContent = {
-  new: {
-    id: "new-mortgage",
-    title: "הרוכש המודאג - משכנתא חדשה",
-    imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&q=80",
-    imageAlt: "בית מודרני חדש",
-    icon: Home,
-    problem: {
-      headline: "מתלבטים איזה תמהיל משכנתא נכון?",
-      description:
-        "טעות אחת יכולה לעלות מאות אלפי שקלים. הבנקים מציעים מה שנוח להם, לא מה שנכון לכם. ב-30 השנים הקרובות, תשלמו את המחיר.",
-    },
-    agitate: {
-      headline: "החלטה שגויה עולה לכם ביוקר",
-      description:
-        "הבנקים מציעים מה שנוח להם, לא מה שנכון לכם. ב-30 השנים הקרובות, תשלמו את המחיר. ללא ייעוץ מקצועי, אתם עלולים לבחור בתמהיל יקר מדי, לא גמיש, או לא מתאים למצב הפיננסי שלכם.",
-    },
-    solve: {
-      headline: "אנחנו בונים תמהיל מותאם אישית",
-      description:
-        "תמהיל שעמיד לשינויים בשוק ומגן עליכם פיננסית לטווח ארוך. נלווה אתכם בכל שלב ונבנה יחד את הפתרון המושלם עבורכם.",
-    },
-    cta: "בנו לי תמהיל מיטבי עכשיו",
-    ctaSecondary: "בדיקה ללא עלות וללא התחייבות",
-  },
-  refinance: {
-    id: "refinance-mortgage",
-    title: "הממחזר במלכוד - מחזור משכנתא",
-    imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
-    imageAlt: "מחשבון וניירות פיננסיים",
-    icon: Calculator,
-    problem: {
-      headline: "ריבית הפריים זינקה ב-10 העלאות רצופות",
-      description:
-        "ההחזר החודשי שלכם קפץ באלפי שקלים. אתם לא לבדכם - אלפי משפחות מתמודדות עם אותה בעיה.",
-    },
-    agitate: {
-      headline: "הלחץ הפיננסי שוחק את איכות חייכם",
-      description:
-        "הלחץ הפיננסי הזה שוחק את איכות חייכם ומכריח אותכם לוותר על דברים חיוניים. הפתרון אינו למכור את הבית - הפתרון הוא למחזר את המשכנתא נכון.",
-    },
-    solve: {
-      headline: "אנחנו מתמחים בבנייה מחדש של משכנתאות שנראות אבודות",
-      description:
-        "הניסיון שלנו בעסקאות מורכבות מחזיר לכם שליטה ושקט נפשי. נבנה לכם משכנתא חדשה שתקטין את ההחזר החודשי ותחזיר לכם את השליטה.",
-    },
-    cta: "אני רוצה להקטין את ההחזר עכשיו",
-    ctaSecondary: "הפחיתו את ההחזר החודשי מיידית",
-    urgency: "כל יום שעובר עולה לכם כסף",
-  },
-  reverse: {
-    id: "reverse-mortgage",
-    title: "הגמלאי המחפש כבוד - משכנתא הפוכה",
-    imageUrl: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=800&q=80",
-    imageAlt: "זוג מבוגר בבית",
-    icon: Users,
-    problem: {
-      headline: "הפנסיה לא מספיקה, והבית שלכם מלא בערך שלא ניתן לגעת בו",
-      description:
-        "צריכים כסף לטיפולים רפואיים, לשיפוץ, או לעזור לילדים? הבית שלכם יכול להיות הפתרון - בלי למכור, בלי לעזוב.",
-    },
-    agitate: {
-      headline: "אל תוותרו על העצמאות שלכם",
-      description:
-        "אין צורך להיות תלויים בילדים או לוותר על איכות החיים. משכנתא הפוכה היא דרך מכובדת להפוך את הנכס שלכם להון נזיל.",
-    },
-    solve: {
-      headline: "משכנתא הפוכה - פתרון מכובד לעצמאות פיננסית",
-      description:
-        "תוך שמירה על הבית וללא החזרים חודשיים. נסביר לכם את כל הפרטים, כולל ההשפעה על הירושה, ונעזור לכם לקבל החלטה מושכלת.",
-    },
-    cta: "בדקו כמה כסף אפשר לקבל מהבית",
-    ctaSecondary: "שיחת ייעוץ ללא עלות - עם או בלי הילדים",
-    disclaimer:
-      "חשוב: משכנתא הפוכה משפיעה על הירושה. אנו ממליצים לכלול את בני המשפחה בדיון.",
-  },
+const iconMap = {
+  new: Home,
+  refinance: Calculator,
+  reverse: Users,
 };
 
 export default function ServiceSection({ mortgageType, textAlignment }: ServiceSectionProps) {
-  const content = segmentContent[mortgageType];
+  const content = pageContent.serviceSections[mortgageType];
   const isRightAligned = textAlignment === "right";
-  const IconComponent = content.icon;
+  const IconComponent = iconMap[mortgageType];
+  const imageTitle = ('imageTitle' in content && content.imageTitle) ? content.imageTitle : (content as { title: string }).title;
+  const imageSubtitle = ('imageSubtitle' in content && content.imageSubtitle) ? content.imageSubtitle : undefined;
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   // Alternate background colors for visual variety
   const bgClass = mortgageType === "new" || mortgageType === "reverse" 
@@ -101,7 +38,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
     : "bg-gradient-to-b from-background via-muted-custom/30 to-background";
 
   return (
-    <section id={content.id} className={`relative py-8 md:py-20 px-4 scroll-mt-20 ${bgClass}`}>
+    <section ref={ref} id={content.id} className={`relative py-8 md:py-20 px-4 scroll-mt-20 ${bgClass}`}>
       {/* Dot grid background pattern */}
       <div 
         className="absolute inset-0 opacity-55 z-0 pointer-events-none"
@@ -115,15 +52,23 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
           !isRightAligned ? "md:flex-row-reverse" : ""
         }`}>
           {/* Image Column - Sticky */}
-          <div className="w-full md:w-1/2 md:flex-shrink-0">
+          <motion.div 
+            className="w-full md:w-1/2 md:flex-shrink-0"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={createVariants({ 
+              type: isRightAligned ? "slideInLeft" : "slideInRight", 
+              duration: 1.0, 
+              delay: 0.3 
+            })}
+          >
             <div className="sticky-image-wrapper">
               <div className="relative w-full aspect-[16/9] md:aspect-square rounded-2xl overflow-hidden shadow-2xl group">
-                <Image
+                <OptimizedImage
                   src={content.imageUrl}
                   alt={content.imageAlt}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -133,24 +78,46 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
                       <IconComponent className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-bold">{content.title}</h3>
+                      <h3 className="text-xl font-bold">{imageTitle}</h3>
+                      {imageSubtitle && (
+                        <p className="text-sm mt-1 opacity-90">{imageSubtitle}</p>
+                      )}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Content Column */}
-          <div className="w-full md:w-1/2 space-y-6 text-right">
-            <div>
+          <motion.div 
+            className="w-full md:w-1/2 space-y-6 text-right"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={createVariants({ 
+              type: isRightAligned ? "slideInRight" : "slideInLeft", 
+              duration: 1.0, 
+              delay: 0.4 
+            })}
+          >
+            <motion.div
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "fadeUp", duration: 0.9, delay: 0.5 })}
+            >
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
                 {content.title}
               </h2>
-            </div>
+            </motion.div>
 
             {/* Problem */}
-            <div className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 p-6 rounded-xl border border-red-200/50 dark:border-red-800/30 shadow-md hover:shadow-lg transition-shadow">
+            <motion.div 
+              className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/30 dark:to-red-900/20 p-6 rounded-xl border border-red-200/50 dark:border-red-800/30 shadow-md hover:shadow-lg transition-shadow"
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "slideUp", duration: 0.8, delay: 0.7 })}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
               <div className="flex items-start gap-3 mb-3">
                 <div className="p-2 bg-red-500/10 rounded-lg">
                   <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
@@ -162,10 +129,16 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
               <p className="text-muted-foreground leading-relaxed pr-11">
                 {content.problem.description}
               </p>
-            </div>
+            </motion.div>
 
             {/* Agitate */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 p-6 rounded-xl border border-orange-200/50 dark:border-orange-800/30 shadow-md hover:shadow-lg transition-shadow">
+            <motion.div 
+              className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/30 dark:to-orange-900/20 p-6 rounded-xl border border-orange-200/50 dark:border-orange-800/30 shadow-md hover:shadow-lg transition-shadow"
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "slideUp", duration: 0.8, delay: 0.8 })}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
               <div className="flex items-start gap-3 mb-3">
                 <div className="p-2 bg-orange-500/10 rounded-lg">
                   <TrendingDown className="w-5 h-5 text-orange-600 dark:text-orange-400" />
@@ -177,10 +150,16 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
               <p className="text-muted-foreground leading-relaxed pr-11">
                 {content.agitate.description}
               </p>
-            </div>
+            </motion.div>
 
             {/* Solve */}
-            <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 p-6 rounded-xl border-2 border-primary/30 dark:border-primary/40 shadow-lg hover:shadow-xl transition-shadow">
+            <motion.div 
+              className="bg-gradient-to-br from-primary/10 via-primary/5 to-secondary/10 dark:from-primary/20 dark:to-secondary/20 p-6 rounded-xl border-2 border-primary/30 dark:border-primary/40 shadow-lg hover:shadow-xl transition-shadow"
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "slideUp", duration: 0.8, delay: 0.9 })}
+              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
+            >
               <div className="flex items-start gap-3 mb-3">
                 <div className="p-2 bg-primary/20 rounded-lg">
                   <TrendingUp className="w-5 h-5 text-primary" />
@@ -192,29 +171,45 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
               <p className="text-muted-foreground leading-relaxed pr-11">
                 {content.solve.description}
               </p>
-            </div>
+            </motion.div>
 
             {/* Urgency (for refinance) */}
             {'urgency' in content && content.urgency && (
-              <div className="bg-gradient-to-r from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-800/20 p-5 rounded-xl border-2 border-yellow-300 dark:border-yellow-700 text-center shadow-md">
+              <motion.div 
+                className="bg-gradient-to-r from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-800/20 p-5 rounded-xl border-2 border-yellow-300 dark:border-yellow-700 text-center shadow-md"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={createVariants({ type: "scaleIn", duration: 0.8, delay: 1.1 })}
+              >
                 <p className="text-lg font-semibold text-foreground flex items-center justify-center gap-2">
                   <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                   {content.urgency}
                 </p>
-              </div>
+              </motion.div>
             )}
 
             {/* Disclaimer (for reverse mortgage) */}
             {'disclaimer' in content && content.disclaimer && (
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 p-5 rounded-xl border border-blue-300/50 dark:border-blue-700/50 shadow-md">
+              <motion.div 
+                className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/30 dark:to-blue-900/20 p-5 rounded-xl border border-blue-300/50 dark:border-blue-700/50 shadow-md"
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+                variants={createVariants({ type: "fadeUp", duration: 0.8, delay: 1.1 })}
+              >
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {content.disclaimer}
                 </p>
-              </div>
+              </motion.div>
             )}
 
             {/* CTA Button */}
-            <div className="pt-4" style={{ overflow: 'visible' }}>
+            <motion.div 
+              className="pt-4" 
+              style={{ overflow: 'visible' }}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+              variants={createVariants({ type: "fadeUp", duration: 0.8, delay: 1.2 })}
+            >
               <div className="form-button-container">
                 <Button
                   onClick={() => {
@@ -231,8 +226,8 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
               <p className="text-center text-sm text-muted-foreground mt-3">
                 {content.ctaSecondary}
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

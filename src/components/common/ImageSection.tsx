@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import OptimizedImage from "@/components/common/OptimizedImage";
 import { ImageSectionType } from "@/types/types";
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/utils";
@@ -16,7 +16,7 @@ const ImageSection = ({ data }: ImageSectionProps) => {
     <section className="relative w-screen -mx-5">
       {/* Full-screen background image */}
       <div className="absolute top-0 left-0 w-full h-full -z-10 ">
-        <Image
+        <OptimizedImage
           src={src}
           alt={alt || "background image"}
           fill
@@ -31,11 +31,11 @@ const ImageSection = ({ data }: ImageSectionProps) => {
       <div className="relative flex flex-col items-center justify-center text-center space-y-5 px-5 py-14  max-w-screen-sm md:max-w-screen-md mx-auto">
         {/* Optional Icon */}
         {buttonText && (
-            <Image
+            <OptimizedImage
               src="/favicon.ico"
               alt="Level Up image"
               width={80}
-              height={1}
+              height={80}
               className="object-contain w-[80px] h-auto"
             />
         )}

@@ -1,4 +1,4 @@
-import Image from "next/image"
+import OptimizedImage from "@/components/common/OptimizedImage"
 import Link from "next/link"
 import { Home } from "lucide-react"
 
@@ -12,7 +12,7 @@ const Logo = ({ isTextWhite = false, isTextShow = true, size = 50 }: Props) => {
   const logoLink = { text: "Home", href: "/", src: "/favicon.ico", icon: <Home />, alt: "LevelUp Logo", title: "LevelUp" }
   return (
     <Link href={logoLink.href} className={`flex items-center justify-center text-xl font-bold ${isTextWhite && "text-white"}`}>
-      <Image
+      <OptimizedImage
         src={logoLink.src}
         alt={logoLink.alt}
         height={size}
