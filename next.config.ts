@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Security headers are handled by src/middleware.ts
+  // This includes CSP, HSTS, X-Frame-Options, and other security headers
+  // Rate limiting and CORS are also configured in the middleware
 };
 
 export default nextConfig;

@@ -1,6 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import { Resend } from 'resend';
+import { serverLeadSchema } from '@/lib/validations';
+import {
+  sanitizeName,
+  sanitizeEmail,
+  sanitizePhone,
+  sanitizeForHTML,
+  getClientIP,
+  validateOrigin,
+  logSecurityEvent,
+  containsDangerousContent,
+} from '@/lib/security';
 
 // Vercel waitUntil helper for background tasks
 // This ensures the email is sent even after the response is returned
@@ -39,14 +50,6 @@ interface GoogleSheetsError extends Error {
 
 interface ResendError extends Error {
   message: string;
-}
-
-interface RequestBody {
-  name?: string;
-  fullName?: string;
-  email?: string;
-  phone?: string;
-  mortgageType?: string;
 }
 
 // Mortgage type mapping to Hebrew
@@ -176,13 +179,21 @@ async function sendEmailNotification(lead: LeadRequestBody) {
     ? `https://docs.google.com/spreadsheets/d/${spreadsheetId}`
     : '';
 
+  // Sanitize all user inputs before inserting into HTML template (XSS prevention)
+  const sanitizedName = sanitizeForHTML(name);
+  const sanitizedEmail = lead.email ? sanitizeForHTML(lead.email) : 'לא צוין';
+  const sanitizedPhone = sanitizeForHTML(lead.phone);
+  const sanitizedMortgageType = sanitizeForHTML(mortgageTypeHebrew);
+  const sanitizedTimestamp = sanitizeForHTML(getIsraeliTimestamp());
+  const sanitizedSpreadsheetUrl = spreadsheetUrl ? sanitizeForHTML(spreadsheetUrl) : '';
+  
   const emailHtml = `
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ליד חדש - ${name}</title>
+  <title>ליד חדש - ${sanitizedName}</title>
 </head>
 <body style="font-family: Arial, sans-serif; direction: rtl; text-align: right; background-color: #f5f5f5; padding: 20px;">
   <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -196,30 +207,30 @@ async function sendEmailNotification(lead: LeadRequestBody) {
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
           <td style="padding: 10px; font-weight: bold; color: #333; width: 40%;">שם:</td>
-          <td style="padding: 10px; color: #666;">${name}</td>
+          <td style="padding: 10px; color: #666;">${sanitizedName}</td>
         </tr>
         <tr>
           <td style="padding: 10px; font-weight: bold; color: #333;">אימייל:</td>
-          <td style="padding: 10px; color: #666;">${lead.email || 'לא צוין'}</td>
+          <td style="padding: 10px; color: #666;">${sanitizedEmail}</td>
         </tr>
         <tr>
           <td style="padding: 10px; font-weight: bold; color: #333;">טלפון:</td>
-          <td style="padding: 10px; color: #666;">${lead.phone}</td>
+          <td style="padding: 10px; color: #666;">${sanitizedPhone}</td>
         </tr>
         <tr>
           <td style="padding: 10px; font-weight: bold; color: #333;">סוג משכנתא:</td>
-          <td style="padding: 10px; color: #666;">${mortgageTypeHebrew}</td>
+          <td style="padding: 10px; color: #666;">${sanitizedMortgageType}</td>
         </tr>
         <tr>
           <td style="padding: 10px; font-weight: bold; color: #333;">תאריך ושעה:</td>
-          <td style="padding: 10px; color: #666;">${getIsraeliTimestamp()}</td>
+          <td style="padding: 10px; color: #666;">${sanitizedTimestamp}</td>
         </tr>
       </table>
     </div>
     
-    ${spreadsheetUrl ? `
+    ${sanitizedSpreadsheetUrl ? `
     <div style="text-align: center; margin-top: 30px;">
-      <a href="${spreadsheetUrl}" 
+      <a href="${sanitizedSpreadsheetUrl}" 
          style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
         צפה בגיליון האלקטרוני
       </a>
@@ -262,45 +273,174 @@ async function sendEmailNotification(lead: LeadRequestBody) {
   }
 }
 
-// Validate request body
-function validateLeadData(body: RequestBody): LeadRequestBody {
-  const name = body.name || body.fullName;
+/**
+ * Validate and sanitize request body using Zod schema
+ */
+function validateAndSanitizeLeadData(body: unknown): LeadRequestBody {
+  // Validate using Zod schema
+  const validationResult = serverLeadSchema.safeParse(body);
   
-  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+  if (!validationResult.success) {
+    const firstError = validationResult.error.issues[0];
+    throw new Error(firstError?.message || 'נתונים לא תקינים');
+  }
+  
+  const data = validationResult.data;
+  
+  // Check honeypot field (bot protection)
+  if (data.website && data.website.length > 0) {
+    logSecurityEvent('BOT_DETECTED', { website: data.website });
+    throw new Error('נתונים לא תקינים');
+  }
+  
+  // Get name (support both name and fullName for backward compatibility)
+  const name = data.name || data.fullName;
+  
+  if (!name || name.trim().length === 0) {
     throw new Error('שם הוא שדה חובה');
   }
-
-  if (!body.phone || typeof body.phone !== 'string' || body.phone.trim().length === 0) {
-    throw new Error('טלפון הוא שדה חובה');
+  
+  // Additional sanitization (defense in depth)
+  const sanitizedName = sanitizeName(name);
+  if (!sanitizedName || sanitizedName.length < 2) {
+    throw new Error('שם מכיל תווים לא תקינים');
   }
-
-  if (!body.mortgageType || !['new', 'refinance', 'reverse'].includes(body.mortgageType)) {
+  
+  // Sanitize phone
+  const sanitizedPhone = sanitizePhone(data.phone);
+  if (!sanitizedPhone || sanitizedPhone.length !== 10) {
+    throw new Error('מספר טלפון לא תקין');
+  }
+  
+  // Sanitize email if provided
+  let sanitizedEmail = '';
+  if (data.email && data.email.trim().length > 0) {
+    sanitizedEmail = sanitizeEmail(data.email);
+    if (!sanitizedEmail) {
+      throw new Error('כתובת אימייל לא תקינה');
+    }
+  }
+  
+  // Check for dangerous content
+  if (containsDangerousContent(sanitizedName) || 
+      containsDangerousContent(sanitizedPhone) ||
+      (sanitizedEmail && containsDangerousContent(sanitizedEmail))) {
+    logSecurityEvent('DANGEROUS_CONTENT_DETECTED', {
+      name: sanitizedName.substring(0, 20),
+      phone: sanitizedPhone.substring(0, 5),
+    });
+    throw new Error('נתונים לא תקינים');
+  }
+  
+  // Validate mortgage type
+  if (!['new', 'refinance', 'reverse'].includes(data.mortgageType)) {
     throw new Error('סוג משכנתא לא תקין');
   }
-
-  // Type assertion is safe here because we validated it above
-  const validMortgageType = body.mortgageType as 'new' | 'refinance' | 'reverse';
-
+  
   return {
-    name: body.name,
-    fullName: body.fullName,
-    email: body.email || '',
-    phone: body.phone.trim(),
-    mortgageType: validMortgageType,
+    name: sanitizedName,
+    fullName: sanitizedName,
+    email: sanitizedEmail,
+    phone: sanitizedPhone,
+    mortgageType: data.mortgageType as 'new' | 'refinance' | 'reverse',
   };
 }
 
-// POST handler
+// POST handler with comprehensive security
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  const clientIP = getClientIP(request);
+  
   try {
-    // Parse request body
-    const body = await request.json();
+    // Validate request origin/referer (CSRF protection)
+    const allowedOrigins: string[] = [];
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+      allowedOrigins.push(process.env.NEXT_PUBLIC_SITE_URL);
+    }
+    if (process.env.ALLOWED_ORIGINS) {
+      allowedOrigins.push(...process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()));
+    }
+    
+    // In production, validate origin (skip in development for easier testing)
+    if (process.env.NODE_ENV === 'production' && allowedOrigins.length > 0) {
+      if (!validateOrigin(request, allowedOrigins)) {
+        logSecurityEvent('INVALID_ORIGIN', {
+          origin: request.headers.get('origin'),
+          referer: request.headers.get('referer'),
+        }, request);
+        
+        return NextResponse.json(
+          {
+            success: false,
+            message: 'אירעה שגיאה בעת עיבוד הבקשה',
+          },
+          { status: 403 }
+        );
+      }
+    }
+    
+    // Parse request body with timeout
+    let body: unknown;
+    try {
+      const bodyText = await request.text();
+      body = JSON.parse(bodyText);
+    } catch {
+      logSecurityEvent('INVALID_JSON', {}, request);
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'נתונים לא תקינים',
+        },
+        { status: 400 }
+      );
+    }
 
-    // Validate request data
-    const leadData = validateLeadData(body);
+    // Validate and sanitize request data
+    let leadData: LeadRequestBody;
+    try {
+      leadData = validateAndSanitizeLeadData(body);
+    } catch (validationError) {
+      const errorMessage = validationError instanceof Error 
+        ? validationError.message 
+        : 'נתונים לא תקינים';
+      
+      logSecurityEvent('VALIDATION_FAILED', {
+        error: errorMessage,
+      }, request);
+      
+      return NextResponse.json(
+        {
+          success: false,
+          message: errorMessage,
+        },
+        { status: 400 }
+      );
+    }
 
     // Save to Google Sheets (critical - await this)
-    await appendToGoogleSheets(leadData);
+    try {
+      await appendToGoogleSheets(leadData);
+    } catch (sheetsError) {
+      // Log detailed error server-side but return generic message to client
+      const errorDetails = sheetsError instanceof Error ? sheetsError.message : 'Unknown error';
+      console.error('[API] Google Sheets error:', {
+        error: errorDetails,
+        ip: clientIP,
+        timestamp: new Date().toISOString(),
+      });
+      
+      logSecurityEvent('GOOGLE_SHEETS_ERROR', {
+        error: errorDetails.substring(0, 100), // Limit log size
+      }, request);
+      
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'אירעה שגיאה בשמירת הנתונים. אנא נסה שוב מאוחר יותר.',
+        },
+        { status: 500 }
+      );
+    }
 
     // Return success response immediately - don't wait for email
     const response: ApiResponse = {
@@ -313,31 +453,48 @@ export async function POST(request: NextRequest) {
     waitUntil(
       sendEmailNotification(leadData).catch((emailError) => {
         // Log email error but don't fail the request - lead is already saved
-        console.error('Email notification failed (background):', emailError);
+        console.error('[API] Email notification failed (background):', {
+          error: emailError instanceof Error ? emailError.message : 'Unknown error',
+          ip: clientIP,
+          timestamp: new Date().toISOString(),
+        });
       })
     );
 
+    // Log successful request
+    const duration = Date.now() - startTime;
+    console.log('[API] Lead saved successfully:', {
+      ip: clientIP,
+      duration: `${duration}ms`,
+      timestamp: new Date().toISOString(),
+    });
+
     return NextResponse.json(response, { status: 200 });
   } catch (error) {
-    console.error('API error:', error);
-
-    const errorMessage = error instanceof Error ? error.message : 'אירעה שגיאה בעת עיבוד הבקשה';
+    // Log detailed error server-side
+    const errorDetails = error instanceof Error ? error.message : 'Unknown error';
+    const duration = Date.now() - startTime;
     
-    const response: ApiResponse = {
-      success: false,
-      message: errorMessage,
-      error: error instanceof Error ? error.message : 'Unknown error',
-    };
+    console.error('[API] Unexpected error:', {
+      error: errorDetails,
+      stack: error instanceof Error ? error.stack : undefined,
+      ip: clientIP,
+      duration: `${duration}ms`,
+      timestamp: new Date().toISOString(),
+    });
+    
+    logSecurityEvent('UNEXPECTED_ERROR', {
+      error: errorDetails.substring(0, 200), // Limit log size
+    }, request);
 
-    // Determine appropriate status code
-    let statusCode = 500;
-    if (errorMessage.includes('שדה חובה') || errorMessage.includes('לא תקין')) {
-      statusCode = 400; // Bad Request
-    } else if (errorMessage.includes('Missing') || errorMessage.includes('configuration')) {
-      statusCode = 500; // Internal Server Error
-    }
-
-    return NextResponse.json(response, { status: statusCode });
+    // Return generic error message to client (don't expose internal details)
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'אירעה שגיאה בעת עיבוד הבקשה. אנא נסה שוב מאוחר יותר.',
+      },
+      { status: 500 }
+    );
   }
 }
 

@@ -101,6 +101,7 @@ export default function LeadForm({
           phone: formData.phone,
           email: formData.email || undefined,
           mortgageType: formData.mortgageType,
+          website: "", // Honeypot field - should always be empty
           utm_source: utm.utm_source,
           utm_medium: utm.utm_medium,
           utm_campaign: utm.utm_campaign,
@@ -259,6 +260,20 @@ export default function LeadForm({
           {errors.mortgageType && (
             <p className="text-sm text-destructive">{errors.mortgageType}</p>
           )}
+        </div>
+
+        {/* Honeypot field for bot protection - hidden from users but visible to bots */}
+        <div style={{ position: 'absolute', left: '-9999px', opacity: 0, pointerEvents: 'none' }} aria-hidden="true">
+          <label htmlFor="website">Website (leave blank)</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value=""
+            onChange={() => {}} // No-op to prevent React warnings
+          />
         </div>
 
         <div className="form-button-container">
