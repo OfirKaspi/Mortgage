@@ -2,6 +2,7 @@
  * Main Landing Page Component
  * 
  * This page showcases mortgage consultation services with:
+ * Updated: Repository renamed to ezmashcanta
  * - Hero section with background image and service selection
  * - Trust indicators and benefits
  * - Three service sections (new, refinance, reverse mortgage) with sticky images
