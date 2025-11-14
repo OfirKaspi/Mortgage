@@ -197,8 +197,8 @@ export default function Hero() {
           {/* Logo behind person image */}
           <div className="absolute inset-0 flex items-center justify-center z-0 opacity-30">
             <OptimizedImage
-              src="https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/BishvilHamashkanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png"
-              alt="Logo background"
+              src={content.images.logo.url}
+              alt={content.images.logo.alt}
               width={400}
               height={400}
               className="w-full h-full max-w-[200px] sm:max-w-[250px] md:max-w-[300px] lg:max-w-[350px] object-contain"
@@ -208,8 +208,8 @@ export default function Hero() {
           {/* Person image in front */}
           <div className="relative z-10 w-full" style={{ minHeight: 0 }}>
             <OptimizedImage
-              src="https://res.cloudinary.com/dudwjf2pu/image/upload/v1763052733/BishvilHamashkanta/freepik__expand-hid-right-arm-and-keep-the-same-background-__71899_liuttn.png"
-              alt={content.image.alt}
+              src={content.images.person.url}
+              alt={content.images.person.alt}
               width={1920}
               height={1080}
               className="w-full h-auto max-h-none object-contain"

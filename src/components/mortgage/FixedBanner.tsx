@@ -28,8 +28,8 @@ export default function FixedBanner() {
         <div className="flex items-center justify-between gap-2 sm:gap-3 md:gap-4">
         <div className="block flex-shrink-0">
               <OptimizedImage
-                src="https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/BishvilHamashkanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png"
-                alt="Logo"
+                src={pageContent.images.logo.url}
+                alt={pageContent.images.logo.alt}
                 width={80}
                 height={40}
                 className="h-8 w-auto sm:h-10 md:h-12 object-contain"

@@ -48,7 +48,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
         }}
       />
       <div className="container mx-auto max-w-6xl relative z-10">
-        <div className={`flex flex-col md:flex-row gap-12 md:items-start ${
+        <div className={`flex flex-col md:flex-row gap-2 md:gap-12 md:items-start ${
           !isRightAligned ? "md:flex-row-reverse" : ""
         }`}>
           {/* Image Column - Sticky */}
@@ -63,7 +63,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
             })}
           >
             <div className="sticky-image-wrapper">
-              <div className="relative w-full aspect-[16/9] md:aspect-square rounded-2xl overflow-hidden shadow-2xl group">
+              <div className="relative w-full aspect-[4/3] md:aspect-square rounded-2xl overflow-hidden shadow-2xl group">
                 <OptimizedImage
                   src={content.imageUrl}
                   alt={content.imageAlt}
@@ -71,8 +71,21 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
+                {/* Mobile: Full overlay with centered content */}
+                <div className="absolute inset-0 bg-black/60 md:bg-gradient-to-t md:from-black/60 md:via-black/20 md:to-transparent flex md:block items-center justify-center md:items-end" />
+                {/* Mobile: Centered content */}
+                <div className="absolute inset-0 flex md:hidden items-center justify-center p-6">
+                  <div className="flex flex-col items-center gap-4 text-white text-center">
+                    <div>
+                      <h3 className="text-3xl font-bold">{imageTitle}</h3>
+                      {imageSubtitle && (
+                        <p className="text-lg mt-2 opacity-90">{imageSubtitle}</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {/* Desktop: Bottom-aligned content */}
+                <div className="hidden md:block absolute bottom-0 left-0 right-0 p-6">
                   <div className="flex items-center gap-3 text-white">
                     <div className="p-3 bg-primary/90 backdrop-blur-sm rounded-lg">
                       <IconComponent className="w-6 h-6" />
@@ -91,7 +104,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
 
           {/* Content Column */}
           <motion.div 
-            className="w-full md:w-1/2 space-y-6 text-right"
+            className="w-full md:w-1/2 space-y-6 text-left md:text-right mx-auto md:mx-0"
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
             variants={createVariants({ 
@@ -105,7 +118,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
               animate={isInView ? "visible" : "hidden"}
               variants={createVariants({ type: "fadeUp", duration: 0.9, delay: 0.5 })}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="hidden md:block text-3xl md:text-4xl font-bold text-foreground mb-4">
                 {content.title}
               </h2>
             </motion.div>
@@ -126,7 +139,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
                 {content.problem.headline}
               </h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed pr-11">
+              <p className="text-muted-foreground leading-relaxed md:pr-11">
                 {content.problem.description}
               </p>
             </motion.div>
@@ -147,7 +160,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
                 {content.agitate.headline}
               </h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed pr-11">
+              <p className="text-muted-foreground leading-relaxed md:pr-11">
                 {content.agitate.description}
               </p>
             </motion.div>
@@ -168,7 +181,7 @@ export default function ServiceSection({ mortgageType, textAlignment }: ServiceS
                 {content.solve.headline}
               </h3>
               </div>
-              <p className="text-muted-foreground leading-relaxed pr-11">
+              <p className="text-muted-foreground leading-relaxed md:pr-11">
                 {content.solve.description}
               </p>
             </motion.div>

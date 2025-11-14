@@ -6,6 +6,32 @@
  */
 
 export const pageContent = {
+  metadata: {
+    title: "בשביל המשכנתא | ייעוץ משכנתאות מקצועי - משכנתא חדשה, מחזור, משכנתא הפוכה",
+    description: "ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות.",
+    keywords: "ייעוץ משכנתאות, משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה, יועץ משכנתאות, תמהיל משכנתא, חיסכון במשכנתא",
+    og: {
+      title: "בשביל המשכנתא | ייעוץ משכנתאות מקצועי - משכנתא חדשה, מחזור, משכנתא הפוכה",
+      description: "ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות.",
+      type: "website",
+      image: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763137327/ezmashcanta/og_image_cpm00s.png",
+        width: "1200",
+        height: "630",
+        alt: "בשביל המשכנתא - ייעוץ משכנתאות מקצועי",
+      },
+      locale: "he_IL",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "בשביל המשכנתא | ייעוץ משכנתאות מקצועי",
+      description: "ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות.",
+      image: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763137327/ezmashcanta/og_image_cpm00s.png",
+      },
+    },
+  },
+
   hero: {
     headline: "עוצרים את מירוץ הריביות: מחזירים את השליטה על המשכנתא לידיים שלך",
     subheadline: "\"בשביל המשכנתא\" חוסכים לך עשרות אלפי שקלים - רק עם ליווי מקצועי ממומחה תקבל מסלול מותאם אישית, עם הגנה פיננסית, שמירה על הבית ועל איכות החיים ובאמת תוכל לישון בשקט!",
@@ -19,9 +45,15 @@ export const pageContent = {
       noCommitment: "ללא התחייבות",
       freeConsultation: "שיחה ראשונית חינם",
     },
-    image: {
-      url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1762968448/BishvilHamashkanta/hero_2_no_bg_2_tihmmy.png",
-      alt: "Home",
+    images: {
+      logo: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/ezmashcanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png",
+        alt: "Logo",
+      },
+      person: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763052733/ezmashcanta/freepik__expand-hid-right-arm-and-keep-the-same-background-__71899_liuttn.png",
+        alt: "Home",
+      },
     },
   },
 
@@ -31,7 +63,7 @@ export const pageContent = {
       title: "רוכשים דירה? מזל טוב!",
       imageTitle: "רוכשים דירה? מזל טוב!",
       imageSubtitle: "ברגע כל כך משמעותי, חשוב שתעשו החלטות הנכונות",
-      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057060/BishvilHamashkanta/10954_a3ezwu.jpg",
+      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057060/ezmashcanta/10954_a3ezwu.jpg",
       imageAlt: "בית מודרני חדש",
       problem: {
         headline: "מתלבטים איזה תמהיל משכנתא מתאים לכם?",
@@ -56,7 +88,7 @@ export const pageContent = {
       title: "לא צריך לחשוש ממחזור המשכנתא",
       imageTitle: "לא צריך לחשוש ממחזור המשכנתא",
       imageSubtitle: "אם אתם חושבים שההחזר החודשי שלכם גבוה, אתם יכולים לפעול אחרת",
-      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057389/BishvilHamashkanta/9168_lk68xp.jpg",
+      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057389/ezmashcanta/9168_lk68xp.jpg",
       imageAlt: "מחשבון וניירות פיננסיים",
       problem: {
         headline: "ריבית הפריים מזנקת ואתם משלמים",
@@ -82,7 +114,7 @@ export const pageContent = {
       title: "בגיל 60+: הנכס שלך יכול להיות לך עוגן",
       imageTitle: "בגיל 60+: הנכס שלך יכול להיות לך עוגן",
       imageSubtitle: "אפשר להפוך את הבית שלך להון נזיל לכל מטרה מבלי למכור, לעזוב או להתחייב להחזרים שוטפים",
-      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057232/BishvilHamashkanta/397469_yvr1ka.jpg",
+      imageUrl: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763057232/ezmashcanta/397469_yvr1ka.jpg",
       imageAlt: "זוג מבוגר בבית",
       problem: {
         headline: "הפנסיה לא מספיקה, והבית שלכם מלא בערך שלא ניתן לגעת בו",
@@ -144,15 +176,15 @@ export const pageContent = {
     },
     images: [
       {
-        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/BishvilHamashkanta/15019_v2yd2x.jpg",
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/ezmashcanta/15019_v2yd2x.jpg",
         alt: "Trust Icon",
       },
       {
-        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/BishvilHamashkanta/12346722_adpfnx.jpg",
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/ezmashcanta/12346722_adpfnx.jpg",
         alt: "Trust Icon",
       },
       {
-        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/BishvilHamashkanta/8404951_zpeej0.jpg",
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/v1763056775/ezmashcanta/8404951_zpeej0.jpg",
         alt: "Trust Icon",
       },
     ],
@@ -331,6 +363,30 @@ export const pageContent = {
       },
     },
     privacy: "בלחיצה על כפתור זה, אתה מסכים למדיניות הפרטיות שלנו. הפרטים שלך יישמרו בצורה מאובטחת ולא יועברו לצדדים שלישיים.",
+    images: {
+      logo: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/ezmashcanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png",
+        alt: "Logo",
+      },
+    },
+  },
+
+  leaveDetailsForm: {
+    header: "נעים להכיר!",
+    description: "השאירו פרטים לשיחת ייעוץ בחינם - תספרו לנו מה העסק שלכם צריך ותקבלו טיפים שתוכלו ליישם מיד",
+    images: {
+      logo: {
+        url: "https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/ezmashcanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png",
+        alt: "Logo",
+      },
+    },
+  },
+
+  images: {
+    logo: {
+      url: "https://res.cloudinary.com/dudwjf2pu/image/upload/c_crop,w_2800/v1763052733/ezmashcanta/%D7%9C%D7%95%D7%92%D7%95_daxkfc.png",
+      alt: "Logo",
+    },
   },
 } as const;
 

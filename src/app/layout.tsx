@@ -7,6 +7,7 @@ import Script from "next/script";
 import GAListener from "@/components/common/GAListener";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { cookies, headers } from 'next/headers';
+import { pageContent } from "@/config/pageContent";
 
 // MUST CHANGE DETAILS, IMAGES, OR ANYTHING RELEVANT + FONTS
 const RootLayout = async ({ children, }: Readonly<{ children: React.ReactNode }>) => {
@@ -28,32 +29,32 @@ const RootLayout = async ({ children, }: Readonly<{ children: React.ReactNode }>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>בשביל המשכנתא | ייעוץ משכנתאות מקצועי - משכנתא חדשה, מחזור, משכנתא הפוכה</title>
+        <title>{pageContent.metadata.title}</title>
         <meta
           name="description"
-          content="ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות."
+          content={pageContent.metadata.description}
         />
         <meta
           name="keywords"
-          content="ייעוץ משכנתאות, משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה, יועץ משכנתאות, תמהיל משכנתא, חיסכון במשכנתא"
+          content={pageContent.metadata.keywords}
         />
-        <meta property="og:title" content="בשביל המשכנתא | ייעוץ משכנתאות מקצועי - משכנתא חדשה, מחזור, משכנתא הפוכה" />
+        <meta property="og:title" content={pageContent.metadata.og.title} />
         <meta
           property="og:description"
-          content="ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות."
+          content={pageContent.metadata.og.description}
         />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://res.cloudinary.com/dudwjf2pu/image/upload/v1763137327/BishvilHamashkanta/og_image_cpm00s.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="בשביל המשכנתא - ייעוץ משכנתאות מקצועי" />
-        <meta property="og:locale" content="he_IL" />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || "https://yourdomain.com"} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="בשביל המשכנתא | ייעוץ משכנתאות מקצועי" />
-        <meta name="twitter:description" content="ייעוץ משכנתאות מקצועי שיחסוך לכם עשרות אלפי שקלים. משכנתא חדשה, מחזור משכנתא, משכנתא הפוכה. ללא עלות וללא התחייבות." />
-        <meta name="twitter:image" content="https://res.cloudinary.com/dudwjf2pu/image/upload/v1763137327/BishvilHamashkanta/og_image_cpm00s.png" />
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || "https://yourdomain.com"} />
+        <meta property="og:type" content={pageContent.metadata.og.type} />
+        <meta property="og:image" content={pageContent.metadata.og.image.url} />
+        <meta property="og:image:width" content={pageContent.metadata.og.image.width} />
+        <meta property="og:image:height" content={pageContent.metadata.og.image.height} />
+        <meta property="og:image:alt" content={pageContent.metadata.og.image.alt} />
+        <meta property="og:locale" content={pageContent.metadata.og.locale} />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || "https://www.ezmashcanta.com"} />
+        <meta name="twitter:card" content={pageContent.metadata.twitter.card} />
+        <meta name="twitter:title" content={pageContent.metadata.twitter.title} />
+        <meta name="twitter:description" content={pageContent.metadata.twitter.description} />
+        <meta name="twitter:image" content={pageContent.metadata.twitter.image.url} />
+        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || "https://www.ezmashcanta.com"} />
         <link
           rel="icon"
           href="/favicon.ico"
