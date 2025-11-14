@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Accessibility, Minus, Plus, RefreshCw, X } from "lucide-react";
 import { useDraggable } from "@/hooks/useDraggable";
 import { createPortal } from "react-dom";
+import useResponsive from "@/hooks/useResponsive";
 
 const localStorageKey = "accessibility-settings";
 
@@ -52,24 +53,28 @@ export default function AccessibilityWidget() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isVisible, setIsVisible] = useState(false);
 	const overlayRef = useRef<HTMLDivElement>(null);
+	const { isMobile } = useResponsive();
 
 	// Set initial position of the draggable button (bottom-left)
 	useEffect(() => {
+		// Use a longer timeout to ensure banner is fully rendered, especially on mobile
 		const timeout = setTimeout(() => {
 		  const cookieNoticeHeight = localStorage.getItem("cookie-consent")
 			? 0
 			: document.querySelector(".cookie-notice")?.clientHeight || 0;
 		  const bannerHeight = document.querySelector('[data-fixed-banner]')?.clientHeight || 0; // Get the height of the fixed banner
 	  
-		  const x = 8;
-		  const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - 8;
-		  setInitialPosition({ x, y });
+		  // Add extra spacing above banner on mobile to ensure widgets are clearly visible
+		  const spacingAboveBanner = isMobile ? 16 : 8;
 	  
-		  console.log("Final Y:", y);
-		}, 0); // next tick
+		  const x = 8;
+		  // Position above banner with proper spacing
+		  const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - spacingAboveBanner;
+		  setInitialPosition({ x, y });
+		}, 100); // Wait a bit longer for banner to render
 	  
 		return () => clearTimeout(timeout);
-	  }, []);
+	  }, [isMobile]);
 
 	const { position, handleMouseDown, handleTouchStart, wasDragged, isDragging } = useDraggable({
 		size,

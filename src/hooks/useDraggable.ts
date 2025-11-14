@@ -67,6 +67,8 @@ export function useDraggable({
     wasDragged.current = true;
 
     const bannerHeight = getFixedBannerHeight();
+    // Add extra spacing above banner when dragging to keep widgets visible
+    const spacingAboveBanner = 8;
 
     const newX = Math.max(
       padding,
@@ -74,7 +76,7 @@ export function useDraggable({
     );
     const newY = Math.max(
       padding,
-      Math.min(window.innerHeight - size - padding - bannerHeight, e.clientY - dragOffset.current.y)
+      Math.min(window.innerHeight - size - padding - bannerHeight - spacingAboveBanner, e.clientY - dragOffset.current.y)
     );
 
     setPosition({ x: newX, y: newY });
@@ -121,6 +123,8 @@ export function useDraggable({
     e.preventDefault(); // Block scroll during actual drag
 
     const bannerHeight = getFixedBannerHeight();
+    // Add extra spacing above banner when dragging to keep widgets visible
+    const spacingAboveBanner = 8;
 
     const newX = Math.max(
       padding,
@@ -128,7 +132,7 @@ export function useDraggable({
     );
     const newY = Math.max(
       padding,
-      Math.min(window.innerHeight - size - padding - bannerHeight, touch.clientY - dragOffset.current.y)
+      Math.min(window.innerHeight - size - padding - bannerHeight - spacingAboveBanner, touch.clientY - dragOffset.current.y)
     );
 
     setPosition({ x: newX, y: newY });

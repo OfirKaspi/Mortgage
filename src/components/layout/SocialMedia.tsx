@@ -29,8 +29,16 @@ const SocialMedia = () => {
     },
   ]
 
-  const handleClick = (href: string) => {
-    redirectToPlatform(href)
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    // Only intercept on mobile to enable native app deep linking
+    // On desktop, let the anchor tag handle it naturally (won't be blocked)
+    if (isMobile) {
+      e.preventDefault();
+      redirectToPlatform(href);
+    }
+    // On desktop, let the default anchor behavior work (opens in new tab)
   }
 
   return (
@@ -42,10 +50,12 @@ const SocialMedia = () => {
             key={social.name}
             role="listitem"
           >
-            <button
-              type="button"
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => handleClick(e, social.href)}
               className="relative w-12 h-12 min-w-[48px] min-h-[48px] rounded-lg border-2 border-border bg-background hover:border-primary hover:bg-primary/5 hover:shadow-md transition-all flex items-center justify-center group p-2"
-              onClick={() => handleClick(social.href)}
               aria-label={social.label}
             >
               <OptimizedImage
@@ -55,7 +65,7 @@ const SocialMedia = () => {
                 height={18}
                 className="object-contain group-hover:scale-110 transition-transform"
               />
-            </button>
+            </a>
           </li>
         ))}
       </ul>

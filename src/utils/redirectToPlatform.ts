@@ -1,12 +1,9 @@
 export const redirectToPlatform = (url: string, wasDragged?: boolean) => {
     if (wasDragged) return;
   
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-    if (isMobile) {
-      window.location.href = url;
-    } else {
-      window.open(url, "_blank", "noopener noreferrer");
-    }
+    // This function is only called on mobile devices
+    // On mobile, use location.href to allow native app deep linking
+    // This enables WhatsApp, Facebook, Instagram, Waze apps to open if installed
+    window.location.href = url;
   };
   

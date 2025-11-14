@@ -18,24 +18,28 @@ const WhatsAppButton = () => {
    */
   const [initialPosition, setInitialPosition] = useState<{ x: number; y: number } | null>(null);
 
-  const { isDesktop } = useResponsive();
+  const { isDesktop, isMobile } = useResponsive();
 
   useEffect(() => {
+    // Use a longer timeout to ensure banner is fully rendered, especially on mobile
     const timeout = setTimeout(() => {
-
       const padding = isDesktop ? 16 : 8;
+      // Add extra spacing above banner on mobile to ensure widgets are clearly visible
+      const spacingAboveBanner = isMobile ? 16 : 8;
+      
       const cookieNoticeHeight = localStorage.getItem("cookie-consent")
         ? 0 // If cookie consent is already accepted, no adjustment needed
         : document.querySelector(".cookie-notice")?.clientHeight || 0; // Get the height of the CookieNotice if visible
       const bannerHeight = document.querySelector('[data-fixed-banner]')?.clientHeight || 0; // Get the height of the fixed banner
 
       const x = window.innerWidth - size - padding;
-      const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - 8; // Adjust position based on CookieNotice and banner height
+      // Position above banner with proper spacing
+      const y = window.innerHeight - size - cookieNoticeHeight - bannerHeight - spacingAboveBanner;
       setInitialPosition({ x, y });
-    }, 0); // next tick
+    }, 100); // Wait a bit longer for banner to render
 
     return () => clearTimeout(timeout);
-  }, [isDesktop]);
+  }, [isDesktop, isMobile]);
 
 
   const { position, handleMouseDown, handleTouchStart, wasDragged, isDragging } = useDraggable({
