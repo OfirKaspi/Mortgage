@@ -381,4 +381,3 @@ export const pageContent = {
     },
   },
 } as const;
-

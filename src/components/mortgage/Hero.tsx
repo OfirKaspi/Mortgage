@@ -136,7 +136,7 @@ export default function Hero() {
           >
             {content.subheadline.split('\n\n').map((paragraph, index) => (
               <p key={index}>{paragraph.trim()}</p>
-            ))}n
+            ))}
           </motion.div>
         </motion.div>
 
