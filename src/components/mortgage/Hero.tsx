@@ -124,8 +124,8 @@ export default function Hero() {
           </motion.h1>
 
           {/* Subheadline */}
-          <motion.p 
-            className="text-xl md:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed"
+          <motion.div 
+            className="text-xl md:text-2xl text-foreground max-w-3xl mx-auto leading-relaxed space-y-4"
             initial="hidden"
             animate={shouldAnimate ? "visible" : "hidden"}
             variants={createVariants({ type: "fadeUp", duration: 0.9, delay: 0.7 })}
@@ -134,8 +134,10 @@ export default function Hero() {
               transform: 'translateZ(0)'
             }}
           >
-            {content.subheadline}
-          </motion.p>
+            {content.subheadline.split('\n\n').map((paragraph, index) => (
+              <p key={index}>{paragraph.trim()}</p>
+            ))}n
+          </motion.div>
         </motion.div>
 
         {/* Path Selection Buttons */}
